@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'pattern_matcher'
+include PatternMatcher
+
+if __FILE__ == $PROGRAM_NAME
+  input = InputParser.new.parse(STDIN.read)
+
+  patterns = Pattern.build(input.patterns)
+  paths    = Path.build(input.paths)
+
+  paths.each do |path|
+    matches = Matcher.build(patterns: patterns, path: path)
+    puts Analyzer.new.best_fitting_pattern_for(matches: matches)
+  end
+end
