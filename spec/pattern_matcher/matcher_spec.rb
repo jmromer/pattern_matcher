@@ -2,6 +2,16 @@ require 'spec_helper'
 
 module PatternMatcher
   describe Matcher do
+    it 'is sortable by pattern string, in descending order by default' do
+      patterns = Pattern.build(%w(a,b,c foo,bar,baz))
+      path     = Path.new('/foo/bar/baz')
+      collection = Matcher.build(patterns: patterns, path: path)
+
+      sorted = collection.sort.map(&:pattern_string)
+
+      expect(sorted).to eq %w(foo,bar,baz a,b,c)
+    end
+
     describe '::build' do
       it 'builds a collection of Matcher objects' do
         patterns = Pattern.build(%w(foo,bar,baz a,b,c))
@@ -37,6 +47,14 @@ module PatternMatcher
           matcher.evaluate
 
           expect(matcher.score).to eq(100 - 33 / 2)
+        end
+
+        it 'zeroes score for mismatch in number of segments' do
+          matcher = build_matcher(path: '/foo/bar/', pattern: 'foo,bar,baz')
+
+          matcher.evaluate
+
+          expect(matcher.score).to eq 0
         end
       end
 

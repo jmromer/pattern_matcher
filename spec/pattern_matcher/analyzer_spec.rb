@@ -21,6 +21,30 @@ module PatternMatcher
 
         expect(best_pattern).to eq 'a,*,*'
       end
+
+      it 'returns the NO MATCH for foo/' do
+        matches = build_matcher_collection(path: 'foo/')
+
+        best_pattern = analyzer.best_fitting_pattern_for(matches: matches)
+
+        expect(best_pattern).to eq 'NO MATCH'
+      end
+
+      it 'returns the NO MATCH for foo/bar/' do
+        matches = build_matcher_collection(path: 'foo/bar/')
+
+        best_pattern = analyzer.best_fitting_pattern_for(matches: matches)
+
+        expect(best_pattern).to eq 'NO MATCH'
+      end
+
+      it 'returns the highest-scoring pattern for foo/bar/baz/' do
+        matches = build_matcher_collection(path: 'foo/bar/baz/')
+
+        best_pattern = analyzer.best_fitting_pattern_for(matches: matches)
+
+        expect(best_pattern).to eq 'foo,bar,baz'
+      end
     end
 
     # all_patterns from /spec/support/test_data_helper.rb

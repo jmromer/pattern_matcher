@@ -1,6 +1,7 @@
 module PatternMatcher
   class Matcher
     include Enumerable
+
     def self.build(patterns:, path:)
       patterns.map { |pattern| Matcher.new(pattern: pattern, path: path) }
     end
@@ -27,15 +28,19 @@ module PatternMatcher
     end
 
     def <=>(other_matcher)
-      score <=> other_matcher
+      other_matcher.pattern_string <=> pattern_string
     end
 
     def evaluate
       pattern.zip(path).reduce(100) do |score, (pattern_seg, path_seg)|
-        case pattern_seg
-        when '*'      then score -= half_segment_worth
-        when path_seg then score
-        else score -= one_segment_worth
+        if pattern_seg == '*'
+          score -= half_segment_worth
+        elsif pattern_seg == path_seg
+          score
+        elsif path_seg == nil
+          0
+        else
+          score -= one_segment_worth
         end
       end
     end
