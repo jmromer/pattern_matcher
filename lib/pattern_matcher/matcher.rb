@@ -33,15 +33,19 @@ module PatternMatcher
 
     def evaluate
       pattern.zip(path).reduce(100) do |score, (pattern_seg, path_seg)|
-        if pattern_seg == '*'
-          score -= half_segment_worth
-        elsif pattern_seg == path_seg
-          score
-        elsif path_seg == nil
-          0
-        else
-          score -= one_segment_worth
-        end
+        segment_score(score, pattern_seg, path_seg)
+      end
+    end
+
+    def segment_score(score, pattern_seg, path_seg)
+      if pattern_seg == '*'
+        score -= half_segment_worth
+      elsif pattern_seg == path_seg
+        score
+      elsif path_seg.nil?
+        0
+      else
+        score -= one_segment_worth
       end
     end
 
