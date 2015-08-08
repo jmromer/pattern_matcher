@@ -1,6 +1,6 @@
 module PatternMatcher
   class Matcher
-    include Enumerable
+    include Comparable
 
     def self.build(patterns:, path:)
       patterns.map { |pattern| Matcher.new(pattern: pattern, path: path) }
