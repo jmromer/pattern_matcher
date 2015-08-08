@@ -20,8 +20,8 @@ module PatternMatcher
     attr_reader :raw_lengths
 
     def valid?
-      exactly_two_sets_given? &&
-        total_number_of_patterns_and_paths_are_as_stated?
+      total_number_of_patterns_and_paths_are_as_stated? &&
+        exactly_two_sets_given?
     end
 
     def split_into_lengths_and_strings(str)
