@@ -4,6 +4,8 @@ module PatternMatcher
 
     def parse(str)
       @raw_lengths, @raw_inputs = split_into_lengths_and_strings(str)
+      @raw_lengths.map!(&:to_i)
+
       fail ArgumentError, 'Invalid Input' unless valid?
 
       @lengths = map_input_type_to_qty_provided
@@ -15,6 +17,8 @@ module PatternMatcher
 
     private
 
+    attr_reader :raw_lengths
+
     def valid?
       exactly_two_sets_given? &&
         total_number_of_patterns_and_paths_are_as_stated?
@@ -25,15 +29,15 @@ module PatternMatcher
     end
 
     def map_input_type_to_qty_provided
-      %i(patterns paths).zip(@raw_lengths.map(&:to_i)).to_h
+      %i(patterns paths).zip(raw_lengths).to_h
     end
 
     def exactly_two_sets_given?
-      @raw_lengths.count == 2
+      raw_lengths.count == 2
     end
 
     def total_number_of_patterns_and_paths_are_as_stated?
-      @raw_inputs.count == @raw_lengths.map(&:to_i).reduce(:+)
+      @raw_inputs.count == raw_lengths.reduce(:+)
     end
   end
 end
