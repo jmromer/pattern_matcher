@@ -35,11 +35,6 @@ foo,bar,baz
 Matching each of the given paths (e.g. `/a/b/c`) with the best-fitting pattern that
 matches it (e.g. `a,b,c`).
 
-Design Notes
--------------
-
-I favored a test-driven, object-oriented design, because that's what I do for a
-living.
 
 Manual Testing
 --------------
